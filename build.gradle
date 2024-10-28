@@ -1,0 +1,75 @@
+buildscript {
+    repositories {
+        maven {
+            url projectRepositoriesMavenUrl
+        }
+    }
+}
+
+plugins {
+    id 'jacoco'
+    id 'java'
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+    alias(libs.plugins.gradle.versions.plugin)
+    alias(libs.plugins.grgit.gradle)
+    alias(libs.plugins.kotlin.gradle.plugin)
+    alias(libs.plugins.license.gradle.plugin)
+    alias(libs.plugins.spotless.plugin.gradle)
+    alias(libs.plugins.version.catalog.update)
+}
+
+group = groupPackage
+version = projectVersion
+description = rootProject.name
+
+// import gradle files
+apply from: "gradle/apply-gradle-files.gradle"
+
+java {
+    sourceCompatibility = projectSourceCompatibility
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(projectSourceCompatibility)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+    // Uncomment the lines below if you want to enable specific compiler warnings
+    // options.compilerArgs << "-Xlint:deprecation"
+    // options.compilerArgs << "-Xlint:unchecked"
+}
+
+sourceSets {
+    test {
+        java.srcDirs = ['src/test/java']
+        kotlin.srcDirs = ['src/test/kotlin']
+    }
+}
+
+tasks.withType(Test).configureEach {
+    maxParallelForks = 1
+}
+
+// Clear unnecessary dependencies to avoid circular dependencies
+tasks.named("compileTestJava").configure { dependsOn.clear() }
+tasks.named("compileTestKotlin").configure { dependsOn.clear() }
+tasks.named("jar").configure { dependsOn.clear() }
+tasks.named("test").configure {
+    dependsOn.clear()
+    dependsOn "compileTestJava", "compileTestKotlin"
+}
+tasks.named("testClasses").configure {
+    dependsOn.clear()
+    dependsOn "compileTestJava", "compileTestKotlin"
+}
+
+tasks.named("test").configure {
+    dependsOn.clear()
+    dependsOn "compileTestJava", "compileTestKotlin"
+}
+tasks.named("testClasses").configure {
+    dependsOn.clear()
+    dependsOn "compileTestJava", "compileTestKotlin"
+}
