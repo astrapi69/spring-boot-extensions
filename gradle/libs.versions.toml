@@ -1,11 +1,11 @@
 [versions]
 file-worker-version = "18.0"
 gradle-migration-data-version = "3.0"
-gradle-plugin-dokka-gradle-plugin-version = "2.0.0-Beta"
 gradle-plugin-grgit-version = "5.3.0"
 gradle-plugin-kotlin-version = "2.1.0-Beta2"
 gradle-plugin-license-version = "0.16.1"
 gradle-plugin-spotless-version = "7.0.0.BETA4"
+gradle-plugin-spring-dependency-management-version = "1.1.6"
 gradle-plugin-version-catalog-update-version = "0.8.5"
 gradle-plugin-versions-version = "0.51.0"
 junit-jupiter-version = "5.11.3"
@@ -14,9 +14,15 @@ mockito-core-version = "5.14.2"
 mockito-junit-jupiter-version = "5.14.2"
 silly-collection-version = "28.1"
 silly-io-version = "3.2"
+silly-jdbc-version = "6"
+spring-boot-version = "3.3.5"
 throwable-version = "3"
+yaml-to-prop-to-yaml-version = "2"
+spring-boot-starter-test-version = "3.1.0"
+
 
 [libraries]
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot-starter-test-version" }
 file-worker = { module = "io.github.astrapi69:file-worker", version.ref = "file-worker-version" }
 gradle-migration-data = { module = "io.github.astrapi69:gradle-migration-data", version.ref = "gradle-migration-data-version" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter-version" }
@@ -25,27 +31,37 @@ mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito-cor
 mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito-junit-jupiter-version" }
 silly-collection = { module = "io.github.astrapi69:silly-collection", version.ref = "silly-collection-version" }
 silly-io = { module = "io.github.astrapi69:silly-io", version.ref = "silly-io-version" }
+silly-jdbc = { module = "io.github.astrapi69:silly-jdbc", version.ref = "silly-jdbc-version" }
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot-version" }
 throwable = { module = "io.github.astrapi69:throwable", version.ref = "throwable-version" }
+yaml-to-prop-to-yaml = { module = "io.github.astrapi69:yaml-to-prop-to-yaml", version.ref = "yaml-to-prop-to-yaml-version" }
 
 [bundles]
+# The core dependencies
+core-dependencies = [
+    "silly-jdbc",
+    "silly-collection",
+    "spring-boot-starter",
+    "yaml-to-prop-to-yaml",
+]
 # Dependencies required only at test runtime, such as test execution platforms
 test-runtime-only = [
     "junit-platform-launcher",
 ]
 # Dependencies required for unit testing
 unit-testing = [
+    "spring-boot-starter-test",
     "file-worker",
     "gradle-migration-data",
     "junit-jupiter",
     "mockito-core",
     "mockito-junit-jupiter",
-    "silly-collection",
     "silly-io",
     "throwable",
 ]
 
 [plugins]
-dokka-gradle-plugin = { id = "org.jetbrains.dokka", version.ref = "gradle-plugin-dokka-gradle-plugin-version" }
+dependency-management-plugin = { id = "io.spring.dependency-management", version.ref = "gradle-plugin-spring-dependency-management-version" }
 gradle-versions-plugin = { id = "com.github.ben-manes.versions", version.ref = "gradle-plugin-versions-version" }
 grgit-gradle = { id = "org.ajoberstar.grgit", version.ref = "gradle-plugin-grgit-version" }
 kotlin-gradle-plugin = { id = "org.jetbrains.kotlin.jvm", version.ref = "gradle-plugin-kotlin-version" }
