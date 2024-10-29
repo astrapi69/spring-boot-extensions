@@ -7,6 +7,8 @@ license {
               "**/README.md",
               "**/LICENSE",
               "**/NOTICE",
+              "**/*.yaml",
+              "**/*.yml",
               "**/*.xml",
               "**/*.xsl",
               "**/*.xsd",
@@ -32,6 +34,3 @@ license {
               "out/**",
               "build/**"])
 }
-// workhack for license issue #76
-gradle.startParameter.excludedTaskNames += "licenseMain"
-gradle.startParameter.excludedTaskNames += "licenseTest"
